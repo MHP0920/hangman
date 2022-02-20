@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, choice
 from time import sleep
+from turtle import width
 from numpy import loadtxt
 from os.path import *
 from sys import *
@@ -12,7 +13,8 @@ class Hangman_init:
         self.word_length = len(list(self.word))
         self.word_list = list(self.word)
         self.guessed_letters = ['_' for i in range(self.word_length)]
-        self.guesses_left = 6
+        self.guesses_left = 10
+        self.wrong_guesses = []
         self.init_letter(choice(self.word_list))
     def get_word(self):
         path = join(split(abspath(argv[0]))[0], 'common.txt')
@@ -25,8 +27,9 @@ class Hangman_init:
             for i in range(self.word_length):
                 if self.word_list[i] == letter:
                     self.guessed_letters[i] = letter
-        elif letter not in self.word_list:
+        elif letter not in self.word_list and letter not in self.wrong_guesses:
             self.guesses_left -= 1
+            self.wrong_guesses.append(letter)
     def check_win(self):
         if self.guesses_left <=0 and self.guessed_letters != self.word_list:
             return False
@@ -39,7 +42,7 @@ class Hangman_UI:
     def __init__(self, master: Tk):
         self.master = master
         self.master.title("Hangman")
-        self.master.geometry("700x700")
+        self.master.geometry("1000x700")
         self.master.resizable(False, False)
         self.master.configure(bg='#2E2E2E')
         self.init_widgets()
@@ -65,8 +68,41 @@ class Hangman_UI:
         self.guess_entry.grid(row=4, column=0, columnspan=2, pady=20)
         self.guess_button = Button(self.master, text="Đoán", font=("Segoe UI", 20), bg="#2E2E2E", fg="#FFC300", command=self.guess_letter)
         self.guess_button.grid(row=5, column=0, columnspan=2, pady=20)
-        self.reload_button = Button(self.master, text="Đổi từ", font=("Segoe UI", 20), bg="#2E2E2E", fg="#FFC300", command=self.reload_word)
+        self.reload_button = Button(self.master, text="Đổi từ", font=("Segoe UI", 20), bg="#2E2E2E", fg="#FFC300", command=self.init_hangman)
         self.reload_button.grid(row=5, column=1, columnspan=2, pady=20, padx=20)
+        self.create_man()
+    def create_man(self):
+        self.hangmanz = Canvas(self.master, width=300, height=300, bg="#2E2E2E", highlightthickness=0)
+        self.hangmanz.grid(row=0, column=3, rowspan=5, pady=20, padx=20)
+        self.hangmanz.create_line(70,20,70,250,width=3, fill="white")
+        self.hangmanz.create_line(70,20,150,20,width=3, fill="white")
+        self.hangmanz.create_line(150,20,150,50,width=3, fill="white")
+        self.hangmanz.create_line(0,250,150,250,width=3, fill="white")
+
+    def add_man(self):
+        if self.hangman.guesses_left <= 9:
+            self.hangmanz.create_oval(125,100,175,50,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 8:
+            self.hangmanz.create_line(135,65,145,65,width=3, fill="black")
+        if self.hangman.guesses_left <= 7:
+            self.hangmanz.create_line(155,65,165,65,width=3, fill="black")
+        if self.hangman.guesses_left <= 6:
+            self.hangmanz.create_line(150,70,150,85,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 5:
+            self.hangmanz.create_line(140,90,160,90,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 4:
+            self.hangmanz.create_line(150,100,150,200,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 3:
+            self.hangmanz.create_line(150,125,100,150,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 2:    
+            self.hangmanz.create_line(150,125,200,150,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 1:    
+            self.hangmanz.create_line(150,200,100,225,width=3, fill="#FFC300")
+        if self.hangman.guesses_left <= 0:    
+            self.hangmanz.create_line(150,200,200,225,width=3, fill="#FFC300")
+    def refresh_man(self):
+        self.create_man()
+        
     def init_bindings(self):
         self.master.bind('<Return>', self.guess_letter)
     def init_hangman(self):
@@ -74,6 +110,8 @@ class Hangman_UI:
         self.update_word()
         self.update_guesses()
         self.update_guessed_letters()
+        self.refresh_man()
+        self.guess_entry.delete(0, 'end')
     def update_word(self):
         self.word_display.configure(text=" ".join(self.hangman.guessed_letters))
     def update_guesses(self):
@@ -83,15 +121,20 @@ class Hangman_UI:
         lettered = ','.join(data)
         self.guessed_letters_display.configure(text=lettered)
     def guess_letter(self, event=None):
-        letter = self.guess_entry.get()
+        letter = self.guess_entry.get().lower()
         if letter == '':
             messagebox.showwarning("Warning", "Bạn chưa nhập chữ cái")
+            return
+        if len(letter) > 1:
+            messagebox.showwarning("Warning", "Bạn chỉ được đoán 1 chữ cái")
             return
         self.guess_entry.delete(0, 'end')
         self.hangman.init_letter(letter)
         self.update_word()
         self.update_guesses()
         self.update_guessed_letters()
+        self.refresh_man()
+        self.add_man()
         if self.hangman.check_win():
             self.win_game()
         elif self.hangman.guesses_left <= 0:
@@ -99,14 +142,9 @@ class Hangman_UI:
     def win_game(self):
         messagebox.showinfo("Bạn thắng", "Từ là: {}".format(self.hangman.word))
         self.init_hangman()
+        
     def lose_game(self):
         messagebox.showinfo("Bạn thua", "Từ là: {}".format(self.hangman.word))
         self.init_hangman()
-    def reload_word(self):
-        self.hangman = Hangman_init()
-        self.update_word()
-        self.update_guesses()
-        self.update_guessed_letters()
-        self.guess_entry.delete(0, 'end')
         
 Hangman_UI(Tk())
