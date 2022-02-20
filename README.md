@@ -13,7 +13,7 @@ Quy tắc của trò chơi khá đơn giản:
 
 > Mình đã ngồi thiết kế ra trò chơi này trên tkinter và chia sẻ với các bạn với mong muốn các bạn có thể sửa đổi, tạo ra những bản trò chơi khác đẹp hơn, chất lượng hơn và cũng rất mong các bạn sẽ chia sẻ những bản remake của các bạn để những bạn khác có thể học hỏi, tìm tòi, cùng nhau phát triển.
 
-> Original Source: MHP0920/hangman (github.com)
+> Original Source: [MHP0920/hangman (github.com)](https://github.com/MHP0920/hangman)
 
 _P/s: Cái Video Recorder của mình không record được messagebox của nó, nên khi thua hay thắng sẽ không được hiện trong video của mình, nhưng ở code thật thì vẫn hiện như bình thường nhé._
 __________
