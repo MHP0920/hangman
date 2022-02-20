@@ -6,6 +6,7 @@ from turtle import width
 from numpy import loadtxt
 from os.path import *
 from sys import *
+from string import *
 
 class Hangman_init:
     def __init__(self):
@@ -127,6 +128,9 @@ class Hangman_UI:
             return
         if len(letter) > 1:
             messagebox.showwarning("Warning", "Bạn chỉ được đoán 1 chữ cái")
+            return
+        if letter not in ascii_lowercase:
+            messagebox.showwarning("Warning", "Bạn chỉ được đoán chữ cái")
             return
         self.guess_entry.delete(0, 'end')
         self.hangman.init_letter(letter)
