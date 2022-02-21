@@ -15,6 +15,8 @@ Quy tắc của trò chơi khá đơn giản:
 
 > Original Source: [MHP0920/hangman (github.com)](https://github.com/MHP0920/hangman)
 
+> Facebook post: [Group Lập Trình Python](https://www.facebook.com/groups/codepythontudau/posts/1268783270282223/)
+
 _P/s: Cái Video Recorder của mình không record được messagebox của nó, nên khi thua hay thắng sẽ không được hiện trong video của mình, nhưng ở code thật thì vẫn hiện như bình thường nhé._
 __________
 Best regards
