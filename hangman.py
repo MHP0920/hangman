@@ -88,9 +88,9 @@ class Hangman_UI:
         if self.hangman.guesses_left <= 7:
             self.hangmanz.create_line(155,65,165,65,width=3, fill="black")
         if self.hangman.guesses_left <= 6:
-            self.hangmanz.create_line(150,70,150,85,width=3, fill="#FFC300")
+            self.hangmanz.create_line(150,70,150,85,width=3, fill="black")
         if self.hangman.guesses_left <= 5:
-            self.hangmanz.create_line(140,90,160,90,width=3, fill="#FFC300")
+            self.hangmanz.create_line(140,90,160,90,width=3, fill="black")
         if self.hangman.guesses_left <= 4:
             self.hangmanz.create_line(150,100,150,200,width=3, fill="#FFC300")
         if self.hangman.guesses_left <= 3:
