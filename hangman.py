@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 from random import randint, choice
 from time import sleep
-from turtle import width
 from numpy import loadtxt
 from os.path import *
 from sys import *
